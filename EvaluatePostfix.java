@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class EvaluatePostfix {
-    public static float EvaluatePostfixExpression (String postfixExpr)
+    public static float evaluatePostfixExpression (String postfixExpr)
     {
         Stack<Float> operands = new Stack<Float>();
         float result = 0;
@@ -60,6 +60,7 @@ public class EvaluatePostfix {
        return result;
     } 
 
+    /* In the main function, read the CSV file */
     public static void main(String[] args) {
 
         // this gives you a 2-dimensional array of strings
@@ -71,7 +72,7 @@ public class EvaluatePostfix {
             String line = "";
 
             while ((line = br.readLine()) != null) {
-                System.out.println("line: " + line);
+                // System.out.println("line: " + line);
                 String[] values = line.trim().split(",");                
 
                 // this adds the currently parsed line to the 2-dimensional string array
@@ -96,10 +97,12 @@ public class EvaluatePostfix {
         for(List<String> line: lines) {
             int columnNo = 1;
             for (String value: line) {
-                float postFixResult = EvaluatePostfixExpression(value);
-                System.out.println("csv [" + lineNo + "][" + columnNo + "]: " + value + " = " + postFixResult);
+                float postFixResult = evaluatePostfixExpression(value);
+                // System.out.println("csv [" + lineNo + "][" + columnNo + "] = " + postFixResult);
+                System.out.print(postFixResult + ",");
                 columnNo++;
             }
+            System.out.print("\n");
             lineNo++;
         }
     }
