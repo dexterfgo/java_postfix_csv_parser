@@ -60,11 +60,37 @@ public class EvaluatePostfix {
        return result;
     } 
 
+    public static void writeOutputCells(List<List<String>> cells) {
+        PrintWriter pw = null;
+        StringBuilder sb = new StringBuilder();
+        // the following code lets you iterate through the 2-dimensional array
+        int rowNo = 1; /* TODO: Convert to letter */
+        for(List<String> line: cells) {
+            int columnNo = 1;
+            for (String value: line) {
+                float postFixResult = evaluatePostfixExpression(value);
+                // System.out.println("csv [" + lineNo + "][" + columnNo + "] = " + postFixResult);
+                sb.append(postFixResult + ",");
+                columnNo++;
+            }
+            sb.append("\n");
+            rowNo++;
+        }
+        try {
+            pw = new PrintWriter(new File("output.csv"));
+            pw.print(sb.toString());
+            pw.close();
+            System.out.println(sb.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /* In the main function, read the CSV file */
     public static void main(String[] args) {
 
         // this gives you a 2-dimensional array of strings
-        List<List<String>> lines = new ArrayList<>();
+        List<List<String>> cells = new ArrayList<>();
         BufferedReader br = null;
 
         try{
@@ -76,7 +102,7 @@ public class EvaluatePostfix {
                 String[] values = line.trim().split(",");                
 
                 // this adds the currently parsed line to the 2-dimensional string array
-                lines.add(Arrays.asList(values));
+                cells.add(Arrays.asList(values));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -86,24 +112,11 @@ public class EvaluatePostfix {
             if (br != null) {
                 try {
                     br.close();
+                    writeOutputCells(cells);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
-
-        // the following code lets you iterate through the 2-dimensional array
-        int lineNo = 1;
-        for(List<String> line: lines) {
-            int columnNo = 1;
-            for (String value: line) {
-                float postFixResult = evaluatePostfixExpression(value);
-                // System.out.println("csv [" + lineNo + "][" + columnNo + "] = " + postFixResult);
-                System.out.print(postFixResult + ",");
-                columnNo++;
-            }
-            System.out.print("\n");
-            lineNo++;
         }
     }
 
